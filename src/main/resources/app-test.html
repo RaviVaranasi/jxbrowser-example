@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	function acceptExternalInput() {
+		var s = 'Simulated external input/scan with parameters :';
+		var what = Object.prototype.toString;
+		for (var i = 0; i < arguments.length; i++) {
+			if (i > 0) {
+				s += ', ';
+			}
+			if (what.call(arguments[i]) === '[object Array]') {
+				s += '[' + arguments[i] + ']';
+			} else {
+				s += arguments[i];
+			}
+		}
+		alert(s);
+	}
+
+	function executeJavascript(script) {
+		try {
+			eval(script);
+		} catch(e) {
+			errorCallback('Unable to execute script');
+		}
+	}
+
+	function callValuesChanged() {
+		bridgeCallback(1, 2, 3, 4);
+		bridgeCallback("1", "2", "3", "4");
+	}
+
+	function sendIPadAMessage() {
+		var command = JSON.stringify({'command': 'showEnrollment', 'crxId': 123123123});
+		bridgeCallback("sendToTablet", command, 1, "other");
+	}
+
+	function callErrors() {
+		try {
+			throw "Some javascript error";
+		} catch (e) {
+			errorCallback(e);
+		}
+	}
+</script>
+<form action="" method="POST" >
+	Simulations:<br>
+	<input type="button" name="submit" value="Array Of parameters" onclick="callValuesChanged();"/><br>
+	<input type="button" name="submit" value="Simulate iPAD messages"
+		   onclick="sendIPadAMessage();"/><br>
+	<i>Simulates sending (1, 2, 3, 4) to the host panel</i><br>
+	<input type="button" name="submit" value="Errors" onclick="callErrors();"/><br>
+	<i>Simulates sending an exception 'Some javascript error' to the host panel</i><br>
+	<i>Scanning an item simulates sending data to the page. Try scanning an gift card/loyalty card</i><br>
+
+
+</form>
+</body>
+</html>
