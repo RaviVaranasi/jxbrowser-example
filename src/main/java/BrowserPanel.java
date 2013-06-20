@@ -3,6 +3,7 @@ import com.teamdev.jxbrowser.Browser;
 import com.teamdev.jxbrowser.BrowserFactory;
 import com.teamdev.jxbrowser.BrowserFunction;
 import com.teamdev.jxbrowser.BrowserType;
+import com.teamdev.jxbrowser.gecko15.xpcom.util.PrivilegeProvider;
 import com.teamdev.jxbrowser.prompt.DefaultPromptService;
 import com.teamdev.jxbrowser.script.ScriptErrorEvent;
 import com.teamdev.jxbrowser.script.ScriptErrorListener;
@@ -23,6 +24,7 @@ public class BrowserPanel extends JPanel {
     protected Browser webBrowser;
 
     public String loadResourceContent(String resourceUrl) throws IOException {
+
         InputStream inputStream = this.getClass().getResourceAsStream(resourceUrl);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -36,6 +38,8 @@ public class BrowserPanel extends JPanel {
     }
 
     public BrowserPanel() {
+        PrivilegeProvider privilegeProvider = new PrivilegeProvider();
+        privilegeProvider.enableUniversalXPConnectForLocalFiles();
         webBrowser = BrowserFactory.createBrowser(BrowserType.Mozilla15);
     }
 
